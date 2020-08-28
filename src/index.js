@@ -26,7 +26,7 @@ const checkRequiredFields = (config) => {
 
 const formatFilters = (config) => {}
 
-export default function (config) {
+export default function storyblockImages(config) {
   checkRequiredFields(config)
 
   const { url, size, fitIn, format, quality, smartCrop, focalPoint } = config
@@ -38,8 +38,7 @@ export default function (config) {
 
   const formattedUrlBase = `${IMG_BASE_URL}${
     fitIn ? '/fitIn' : ''
-  }/${width}x${height}
-  ${hasFilters ? formatFilters(config) : ''}`
+  }/${width}x${height}${hasFilters ? formatFilters(config) : ''}`
 
   return url.replace('https://a.storyblok.com', formattedUrlBase)
 }
