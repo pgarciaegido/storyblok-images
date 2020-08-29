@@ -1,6 +1,6 @@
 {
   "name": "storyblok-images",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Easily handle Storyblok images",
   "main": "dist/index.js",
   "scripts": {
