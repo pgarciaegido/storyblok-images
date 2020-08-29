@@ -1,6 +1,6 @@
 # :framed_picture: Storyblok Images
 
-![](./.badges/badge-branches.svg) ![](./.badges/badge-functions.svg) ![](./.badges/badge-lines.svg) ![](./.badges/badge-statements.svg)
+![](./.badges/badge-branches.svg) ![](./.badges/badge-functions.svg) ![](./.badges/badge-lines.svg) ![](./.badges/badge-statements.svg) ![](https://img.shields.io/bundlephobia/minzip/storyblok-images)
 
 Resize and use all the [storyblok images service](https://www.storyblok.com/docs/image-service) operations easily.
 
