@@ -1,4 +1,4 @@
-import storyblokImages from '../src'
+import storyblokImages, { API_DOCS_REFERENCE_TEXT } from '../src'
 
 const RAW_IMAGE_URL =
   'https://a.storyblok.com/f/90668/4180x2335/306bb807eb/vallehermoso1.jpg'
@@ -9,21 +9,21 @@ const EXAMPLE_SIZE = { width: 200, height: 200 }
 const BASE_CONFIG = { url: RAW_IMAGE_URL, size: EXAMPLE_SIZE }
 
 describe('storyblokImages', () => {
-  describe('Esuring correct config is provided', () => {
+  describe('Ensuring correct config is provided', () => {
     test('should throw error when no config provided', () => {
       expect(() => storyblokImages()).toThrow(
-        'Missing config. Check storyblok-images documentation: https://github.com/pgarciaegido/storyblok-images'
+        `Missing config.${API_DOCS_REFERENCE_TEXT}`
       )
     })
     test('should throw error when no url provided', () => {
       expect(() => storyblokImages({})).toThrow(
-        'Missing mandatory field in config: url. Check storyblok-images documentation: https://github.com/pgarciaegido/storyblok-images'
+        `Missing mandatory field in config: url.${API_DOCS_REFERENCE_TEXT}`
       )
     })
 
     test('should throw error when no size provided', () => {
       expect(() => storyblokImages({ url: RAW_IMAGE_URL })).toThrow(
-        'Missing mandatory field in config: size. Check storyblok-images documentation: https://github.com/pgarciaegido/storyblok-images'
+        `Missing mandatory field in config: size.${API_DOCS_REFERENCE_TEXT}`
       )
     })
 
@@ -40,8 +40,42 @@ describe('storyblokImages', () => {
           format: 'svg',
         })
       ).toThrow(
-        'Format svg is not allowed. Please use png, webp, jpeg. Check storyblok-images documentation: https://github.com/pgarciaegido/storyblok-images'
+        `Format svg is not allowed. Please use png, webp, jpeg.${API_DOCS_REFERENCE_TEXT}`
       )
+    })
+
+    test('should throw error when focalPoints are included but not well formatted', () => {
+      expect(() =>
+        storyblokImages({
+          ...BASE_CONFIG,
+          focalPoints: [],
+        })
+      ).toThrow(
+        `focalPoints key is nor properly formatted.${API_DOCS_REFERENCE_TEXT}`
+      )
+    })
+
+    test('should throw error when any focalPoint is not a number', () => {
+      expect(() =>
+        storyblokImages({
+          ...BASE_CONFIG,
+          focalPoints: [
+            [12, 'meeec'],
+            [39, 23],
+          ],
+        })
+      ).toThrow(
+        `focalPoints key is nor properly formatted.${API_DOCS_REFERENCE_TEXT}`
+      )
+    })
+
+    test('should not throw error when focalPoints is falsy', () => {
+      expect(() =>
+        storyblokImages({
+          ...BASE_CONFIG,
+          focalPoints: null,
+        })
+      ).not.toThrow()
     })
   })
 
@@ -137,6 +171,22 @@ describe('storyblokImages', () => {
     test('should include /smart', () => {
       expect(storyblokImages({ ...BASE_CONFIG, smartCrop: true })).toBe(
         `${EXPECTED_URL_BASE}/200x200/smart${EXPECTED_URL_RESOURCE}`
+      )
+    })
+  })
+
+  describe('Focal Points', () => {
+    test('should include smart crop, quality and format', () => {
+      expect(
+        storyblokImages({
+          ...BASE_CONFIG,
+          focalPoints: [
+            [100, 200],
+            [110, 220],
+          ],
+        })
+      ).toBe(
+        `${EXPECTED_URL_BASE}/200x200/filters:focal(100x200:110x220)${EXPECTED_URL_RESOURCE}`
       )
     })
   })
